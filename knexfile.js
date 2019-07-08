@@ -6,6 +6,9 @@ module.exports = {
     client: 'sqlite3',
     connection: {
       filename: './dev.sqlite3'
+    },
+    migrations: {
+      directory: './data/migrations'
     }
   },
 
@@ -22,6 +25,9 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations'
+    },
+    migrations: {
+      directory: './data/migrations'
     }
   }
 
