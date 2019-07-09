@@ -2,8 +2,36 @@ const express = require("express");
 const db = require("../../data/dbConfig");
 const router = express.Router();
 
+// Update // Update // Update // Update // Update // Update // Update // Update // Update 
+router.put("/reviews/:review_id", async (req, res) => {
+  if (!req.body.review) {
+    return res.status(400).json({
+      message: "Please include a review and try again"
+    });
+  }
+  try {
+    const review = await db("reviews")
+      .where({ review_id: req.params.review_id })
+      .update({...req.body});
+    if (review) {
+      res
+        .status(200)
+        .json({ message: "The review was updated successfully.", review });
+    } else {
+      res
+        .status(404)
+        .json({ message: "The review could not be found." });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "There was an error while updating the review.",
+      error
+    });
+  }
+});
+
 // Delete // Delete // Delete // Delete // Delete // Delete // Delete // Delete // Delete 
-router.delete("/reviews/:id", async (req, res) => {
+router.delete("/reviews/:review_id", async (req, res) => {
   try {
     const review = await db("reviews")
       .where({ review_id: req.params.review_id })
@@ -19,6 +47,7 @@ router.delete("/reviews/:id", async (req, res) => {
     res
       .status(500)
       .json({ message: "There was an error deleting the review.", error });
+    console.log(review)
   }
 });
 
