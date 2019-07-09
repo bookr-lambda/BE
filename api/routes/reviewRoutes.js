@@ -3,7 +3,7 @@ const db = require("../../data/dbConfig");
 const router = express.Router();
 
 // Delete // Delete // Delete // Delete // Delete // Delete // Delete // Delete // Delete 
-server.delete("/reviews/:id", async (req, res) => {
+router.delete("/reviews/:id", async (req, res) => {
   try {
     const review = await db("reviews")
       .where({ review_id: req.params.review_id })
@@ -24,7 +24,7 @@ server.delete("/reviews/:id", async (req, res) => {
 
 
 // Get all // Get all // Get all // Get all // Get all // Get all // Get all // Get all 
-server.get("/reviews", async (req, res) => {
+router.get("/reviews", async (req, res) => {
   try {
     const reviews = await db("reviews");
     res.status(200).json(reviews);
@@ -37,12 +37,12 @@ server.get("/reviews", async (req, res) => {
 });
 
 // Get Id  // Get Id  // Get Id  // Get Id  // Get Id  // Get Id  // Get Id  // Get Id  
-router.get("/reviews/:id", async (req, res) => {
+router.get("/reviews/:review_id", async (req, res) => {
   try {
-    const reviews = await db("reviews").where({ id: req.params.id });
+    const reviews = await db("reviews").where({ review_id: req.params.review_id });
     if (reviews.length) {
       const review = reviews[0];
-      res.status(200).json({ ...review});
+      res.status(200).json(review);
     } else {
       res
         .status(404)
@@ -82,3 +82,5 @@ router.post("/reviews", async (req, res) => {
       });
     }
   });
+
+  module.exports = router;
