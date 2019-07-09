@@ -1,9 +1,11 @@
 require("dotenv").config();
 
-const { authenticate } = require("../auth/authenticate");
-// const db = require("../database/dbConfig.js");
+// const { authenticate } = require("../auth/authenticate");
+const express = require("express");
+const db = require("../../data/dbConfig");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const router = express.Router();
 
 function generateToken(user) {
   const payload = {
@@ -20,12 +22,7 @@ function generateToken(user) {
   return jwt.sign(payload, secret, options);
 }
 
-module.exports = server => {
-  server.post("/register", register);
-  server.post("/login", login);
-};
-
-function register(req, res) {
+router.post("/register",async (req, res) => {
   if (!req.body.username || !req.body.password) {
     res.status(400).json({
       message: "Please include a username and password and try again."
@@ -34,10 +31,11 @@ function register(req, res) {
   const newUser = req.body;
   const hash = bcrypt.hashSync(newUser.password, 14);
   newUser.password = hash;
-  db("users")
+  await db("users")
     .insert(newUser)
     .then(response => {
       const token = generateToken(newUser);
+      console.log(response,"-----> this is a response")
       res
         .status(200)
         .json({
@@ -52,22 +50,23 @@ function register(req, res) {
         error
       });
     });
-}
+});
 
-async function login(req, res) {
-  const creds = req.body;
+router.post("/login", async (req, res) => {
+  const credentials = req.body;
   const user = await db("users")
-    .where({ username: creds.username })
+    .where({ username: credentials.username })
     .first();
-  if (user && bcrypt.compareSync(creds.password, user.password)) {
+  if (user && bcrypt.compareSync(credentials.password, user.password)) {
     const token = generateToken(user);
     res
       .status(200)
       .json({ message: "The user was logged in successfully.", token });
   } else {
     res
-      .tatus(401)
+      .status(401)
       .json({ message: "Error. Invalid credentials. Please try again." });
   }
-}
+});
 
+module.exports = router;
