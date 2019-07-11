@@ -17,7 +17,7 @@ server.use("/auth", authRoutes);
 server.use("/", reviewRoutes);
 server.use("/", userRoutes);
 
-server.get('/test', (req, res) => {
+server.get('/', (req, res) => {
     res.send('<h1>Sanity Check! This works!!</h1>')
 })
 
