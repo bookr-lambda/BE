@@ -5,6 +5,7 @@ const server = express();
 
 const authRoutes = require('../api/routes/authRoutes');
 const reviewRoutes = require('../api/routes/reviewRoutes');
+const userRoutes = require('../api/routes/userRoutes');
 
 
 
@@ -14,6 +15,7 @@ server.use(helmet());
 server.use(express.json());
 server.use("/auth", authRoutes);
 server.use("/", reviewRoutes);
+server.use("/", userRoutes);
 
 server.get('/test', (req, res) => {
     res.send('<h1>Sanity Check! This works!!</h1>')
