@@ -17,7 +17,7 @@ router.get("/users", async (req, res) => {
 router.get("/users/:user_id", async (req, res) => {
     try {
       const users = await db("users").where({ user_id: req.params.user_id });
-      if (reviews.length) {
+      if (users.length) {
         const user = users[0];
         res.status(200).json(user);
       } else {
