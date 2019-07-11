@@ -8,11 +8,6 @@ exports.up = function(knex) {
             .onUpdate("CASCADE");
         table.text("review");
         table.float("rating");
-        table.integer("book_id")
-            .references("id")
-            .inTable("books")
-            .onDelete("CASCADE")
-            .onUpdate("CASCADE");
     })
 };
 
