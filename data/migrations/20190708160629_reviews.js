@@ -7,6 +7,7 @@ exports.up = function(knex) {
             .onDelete("CASCADE")
             .onUpdate("CASCADE");
         table.text("review");
+        table.string("book_id");
         table.float("rating");
     })
 };
